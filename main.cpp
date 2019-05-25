@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <cstring>
+#include <cstdlib>
 
 using namespace std;
 
@@ -13,6 +14,7 @@ struct Node
 };
 
 Node *tree = NULL;
+
 
 void addNode(char a[10], Node **t)
 {
@@ -58,7 +60,7 @@ void addNode(char a[10], Node **t)
             addNode(a, &(*t)->right);
       break;
     default:
-      cout << "неправильный ввод";
+      cout << "Неправильный ввод";
       return;
       break;
     }
@@ -91,15 +93,70 @@ if (m==0)
 
 void printTree (Node *t, int u)
 {
-    if (t == NULL) return;                  //Если дерево пустое, то отображать нечего, выходим
+    if (t == NULL) return;
     else //Иначе
     {
-        printTree(t->left, ++u);                   //С помощью рекурсивного посещаем левое поддерево
+        printTree(t->left, ++u);
         for (int i=0; i<u; ++i) cout << "|";
-        cout << t->name << endl;            //И показываем элемент
+        cout << t->name << endl;
         u--;
     }
-    printTree(t->right, ++u);                       //С помощью рекурсии посещаем правое поддерево
+    printTree(t->right, ++u);
+}
+
+void deleteNode(Node **t)
+{
+    if ((*t) == NULL)
+    {
+        cout << " Дерева нет";
+        return;
+    }
+
+    int m = -1;
+
+    if ((*t)->right == NULL)
+        cout << endl <<" Нет правой ветви";
+    else
+        cout << "\nСправа узел с именем: " << (*t)->right->name;
+
+    if ((*t)->left == NULL)
+        cout << endl <<" Нет левой ветви";
+    else
+        cout << "\nСлева узел с именем: " << (*t)->left->name;
+    cout << endl << "0 - пойти влево ,1 - пойти вправо, 2 - удалить левую ветвь, 3 - удалить правую ветвь: " ;
+        cin >> m;
+    switch ( m )
+    {
+    case 0:
+        if ((*t)->left == NULL){
+            cout << "Нет ветви";
+            return;
+        }
+        else
+            deleteNode(&(*t)->left);
+      break;
+    case 1:
+      if ((*t)->right == NULL){
+            cout << "Нет ветви";
+            return;
+        }
+        else
+            deleteNode(&(*t)->right);
+      break;
+    case 2:
+       (*t)->left = NULL ;
+        return;
+      break;
+    case 3:
+        (*t)->right = NULL ;
+        return;
+      break;
+    default:
+      cout << "Неправильный ввод";
+      return;
+      break;
+
+    }
 }
 
 int main ()
@@ -119,6 +176,6 @@ int main ()
     }
     cout << endl << "Ваше дерево:\n";
     printTree(tree, 0);
-    cin.ignore().get();
-
+    deleteNode(&tree);
+    printTree(tree, 0);
 }
