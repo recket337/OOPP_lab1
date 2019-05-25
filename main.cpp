@@ -89,6 +89,18 @@ if (m==0)
  */
 }
 
+void printTree (Node *t, int u)
+{
+    if (t == NULL) return;                  //Если дерево пустое, то отображать нечего, выходим
+    else //Иначе
+    {
+        printTree(t->left, ++u);                   //С помощью рекурсивного посещаем левое поддерево
+        for (int i=0; i<u; ++i) cout << "|";
+        cout << t->name << endl;            //И показываем элемент
+        u--;
+    }
+    printTree(t->right, ++u);                       //С помощью рекурсии посещаем правое поддерево
+}
 
 int main ()
 {
@@ -105,8 +117,8 @@ int main ()
 
         addNode(s, &tree);
     }
-    cout << endl << "Ваше дерево\n";
-    print(tree, 0);
+    cout << endl << "Ваше дерево:\n";
+    printTree(tree, 0);
     cin.ignore().get();
 
 }
